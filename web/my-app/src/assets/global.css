@@ -1,0 +1,30 @@
+  
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+  
+  
+    body{
+      color: #FFF;
+      background: #ebf2f5;
+    }
+  
+    #root {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  
+    body, input,button, textarea{
+      font: 600 18px 'Nunito', sans-serif;  
+    }
+  
+    .container{
+      width: 90vw;
+      max-width: 700px;
+    }
+  
+
+    
