@@ -1,12 +1,16 @@
 import express from 'express';
+import multer from 'multer';
 
-import TesteController from './controllers/teste/TesteController';
+import uploadConfig from './config/upload ';
+import OrphanagesController from './controllers/OrphanagesController';
 
-
+const upload = multer(uploadConfig)
 const routes = express.Router();
-const testeController = new TesteController();
 
-routes.get('/teste', testeController.teste);
+
+routes.get('/orphanages', OrphanagesController.index);
+routes.get('/orphanages/:id', OrphanagesController.findById);
+routes.post('/orphanages', upload.array('images', 10), OrphanagesController.create);
 
 
 export default routes;
