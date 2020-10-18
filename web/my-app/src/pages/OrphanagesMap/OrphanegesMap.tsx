@@ -1,35 +1,26 @@
 import React, {useState, useEffect} from 'react';
-import { FiPlus } from 'react-icons/fi';
+import { FiPlus, FiArrowRight} from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import { Map,TileLayer } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
+import { Map,TileLayer, Marker, Popup } from 'react-leaflet';
 
-import logoMap from '../../assets/icons/logo-map.svg';
-
-
-import './styles.css';
-import '../../assets/global.css';
+import Api from '../../services/api';
+import logoMap from '../../assets/icons/logoMap.svg';
+import mapIcon from '../../utils/mapIcon';
+import './orphanage-map-styles.css';
+import OrphanageModel from '../../models/Orphanage';
+import getLocation from '../../utils/getLocation';
 
 
 function OrphanagesMap(){
-    const [positions, setPositions] = useState([0,0]);
+   // const [currentLocation, setCurrentLocation] = useState<geoLocation>();
+
+    const [orphanages, setOrphanages] = useState <OrphanageModel[]> ([])
 
     useEffect(()=>{
-        navigator.geolocation.getCurrentPosition(showPosition, getGeoError);
+       Api.get('/orphanages').then(response =>{
+        setOrphanages(response.data)
+       });
     },[])
-
-    function getGeoError(error) {
-        if(error.code) {
-            alert('Para uma melhor experiência, e poder visualizar os orfanatos mais próximos de você, seria melhor permitir o uso de localização');
-            setPositions([-16.6806056,-67.0573532]);
-        }
-    }
-
-    function showPosition(position){
-        setPositions([position.coords.latitude, position.coords.longitude]);
-        console.log(position)
-        
-    }
     
     return (
         <div id="page-map">
@@ -46,14 +37,23 @@ function OrphanagesMap(){
                 </footer>
             </aside>
 
-            <Map center={[positions[0] , positions[1]]}
-                 zoom={15}
-                 style={{  width:'100%', height:'100%'}} >
-                     <TileLayer url='https://a.tile.openstreetmap.org/{z}/{x}/{y}.png' />
-                 </Map>
+            <Map center={[-22.7528481,-47.3380935]} zoom={15}  style={{  width:'100%', height:'100%'}}>
+                <TileLayer url='https://a.tile.openstreetmap.org/{z}/{x}/{y}.png' />
+                    {orphanages.map(orphanage=>{
+                        return(
+                        <Marker key={orphanage.id} position={[orphanage.latitude, orphanage.longitude]} icon={mapIcon}  >
+                            <Popup closeButton={false} minWidth={240} maxWidth={240} className='map-popup'>
+                                   {orphanage.name}
+                                   <Link to={`/orphanages/${orphanage.id}`}>
+                                       <FiArrowRight size={20} color='#FFF' />
+                                   </Link>
+                            </Popup>
+                        </Marker>);
+                    })}
+            </Map>
 
-            <Link className='create-arphanage' to='' >
-                <FiPlus size='32' color='#FFF' />
+            <Link to='/orphanages/create' className='create-orphanage'  >
+                <FiPlus size={32} color='#FFF' />
             </Link>
         </div>
     );

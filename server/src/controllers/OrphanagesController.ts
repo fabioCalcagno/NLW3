@@ -56,6 +56,8 @@ export default {
             images
         };
 
+        data.open_on_weekends = data.open_on_weekends === 'true' ?  true  : false;
+
         const schema = Yup.object().shape({
             name: Yup.string().required('Nome é obrigatório'),
             latitude: Yup.number().required(),
@@ -78,6 +80,6 @@ export default {
         const orphanage = orphanageRepository.create(data);
 
         await orphanageRepository.save(orphanage)
-        return res.status(201).json({message:"Orfanato adicionado com sucesso"});
+        return res.status(201).json({message:"Orfanato adicionado com sucesso!"});
     }
 }

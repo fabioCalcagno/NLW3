@@ -3,7 +3,7 @@ import {FiArrowRight} from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
 
-import './styles.css';
+import './landing-styles.css';
 import '../../assets/global.css';
 import Logo from '../../assets/icons/Logo.svg';
 
@@ -22,7 +22,7 @@ function Landing(){
                         <strong>Americana</strong>
                         <span>São Paulo</span>
                     </div>
-                    <Link to="/orphanages" className="enter-app"> 
+                    <Link to="/app" className="enter-app"> 
                     <FiArrowRight className='icon' size={26} color="rgba(0,0,0,0.6)" />
                     </Link>
                 </main>
